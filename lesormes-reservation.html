@@ -711,7 +711,7 @@
         var noteUrl = MOODLE_URL + '/webservice/rest/server.php';
         var body = new URLSearchParams({
           wstoken:              MOODLE_TOKEN,
-          wsfunction:           'core_notes_add_notes',
+          wsfunction:           'core_notes_create_notes',
           moodlewsrestformat:   'json',
           'notes[0][userid]':   userId,
           'notes[0][publishstate]': 'site',   // visible par l'admin seulement
