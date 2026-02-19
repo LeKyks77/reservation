@@ -7,291 +7,55 @@
 <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;500;600;700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
   :root {
-    --teal: #2a9d8f;
-    --teal-light: #4ec9bb;
-    --teal-dark: #1e7a6f;
-    --sand: #c9a96e;
-    --text: #444;
-    --text-light: #888;
-    --border: #d8d8d8;
-    --bg: #f5f5f5;
-    --white: #ffffff;
-    --red: #c0392b;
+    --teal: #2a9d8f; --teal-light: #4ec9bb; --teal-dark: #1e7a6f;
+    --text: #444; --text-light: #888; --border: #d8d8d8;
+    --bg: #f5f5f5; --white: #ffffff; --red: #c0392b;
   }
-
-  body {
-    font-family: 'Lato', sans-serif;
-    background: #efefef;
-    color: var(--text);
-    font-size: 14px;
-  }
-
-  /* ── HEADER ── */
-  header {
-    background: var(--white);
-    border-bottom: 1px solid var(--border);
-    padding: 12px 30px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-
-  .logo {
-    display: flex;
-    flex-direction: column;
-    line-height: 1;
-  }
-  .logo-les {
-    font-family: 'Raleway', sans-serif;
-    font-size: 10px;
-    letter-spacing: 4px;
-    color: var(--teal);
-    font-weight: 600;
-    text-transform: uppercase;
-  }
-  .logo-ormes {
-    font-family: 'Raleway', sans-serif;
-    font-size: 26px;
-    font-weight: 700;
-    color: var(--teal);
-    letter-spacing: 3px;
-    text-transform: uppercase;
-  }
-  .logo-ormes span { position: relative; }
-
-  .header-actions {
-    display: flex;
-    gap: 10px;
-  }
-  .header-btn {
-    border: 1px solid var(--teal);
-    color: var(--teal);
-    background: transparent;
-    padding: 6px 14px;
-    border-radius: 3px;
-    font-size: 12px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    font-family: 'Lato', sans-serif;
-    transition: background 0.2s, color 0.2s;
-  }
+  body { font-family: 'Lato', sans-serif; background: #efefef; color: var(--text); font-size: 14px; }
+  header { background: var(--white); border-bottom: 1px solid var(--border); padding: 12px 30px; display: flex; align-items: center; justify-content: space-between; }
+  .logo { display: flex; flex-direction: column; line-height: 1; }
+  .logo-les { font-family: 'Raleway', sans-serif; font-size: 10px; letter-spacing: 4px; color: var(--teal); font-weight: 600; text-transform: uppercase; }
+  .logo-ormes { font-family: 'Raleway', sans-serif; font-size: 26px; font-weight: 700; color: var(--teal); letter-spacing: 3px; text-transform: uppercase; }
+  .header-actions { display: flex; gap: 10px; }
+  .header-btn { border: 1px solid var(--teal); color: var(--teal); background: transparent; padding: 6px 14px; border-radius: 3px; font-size: 12px; cursor: pointer; display: flex; align-items: center; gap: 6px; font-family: 'Lato', sans-serif; transition: background 0.2s, color 0.2s; }
   .header-btn:hover { background: var(--teal); color: #fff; }
   .header-btn svg { width: 13px; height: 13px; }
-
-  /* ── STEPPER ── */
-  .stepper {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 0;
-    padding: 28px 0 24px;
-    background: var(--white);
-    border-bottom: 1px solid var(--border);
-  }
-  .step {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    color: var(--text-light);
-    font-family: 'Raleway', sans-serif;
-    font-weight: 600;
-    font-size: 13px;
-  }
-  .step-num {
-    width: 28px; height: 28px;
-    border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 13px;
-    font-weight: 700;
-    border: 2px solid currentColor;
-  }
+  .stepper { display: flex; justify-content: center; align-items: center; padding: 28px 0 24px; background: var(--white); border-bottom: 1px solid var(--border); }
+  .step { display: flex; align-items: center; gap: 8px; color: var(--text-light); font-family: 'Raleway', sans-serif; font-weight: 600; font-size: 13px; }
+  .step-num { width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; border: 2px solid currentColor; }
   .step.active { color: var(--teal); }
   .step.active .step-num { background: var(--teal); color: #fff; border-color: var(--teal); }
   .step.done { color: var(--teal-light); }
   .step.done .step-num { border-color: var(--teal-light); }
-  .step-sep {
-    width: 40px; height: 2px;
-    background: var(--border);
-    margin: 0 6px;
-  }
+  .step-sep { width: 40px; height: 2px; background: var(--border); margin: 0 6px; }
   .step-sep.done { background: var(--teal-light); }
-
-  /* ── MAIN ── */
-  main {
-    max-width: 1200px;
-    margin: 30px auto;
-    padding: 0 20px;
-  }
-
-  /* ── AUTH ROW ── */
-  .auth-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 20px;
-    margin-bottom: 20px;
-  }
-
-  .card {
-    background: var(--bg);
-    border: 1px solid var(--border);
-    border-radius: 4px;
-    padding: 24px 28px;
-  }
-
-  .card-title {
-    font-family: 'Raleway', sans-serif;
-    font-size: 14px;
-    font-weight: 600;
-    color: var(--text);
-    margin-bottom: 18px;
-  }
-
-  .new-account-label {
-    font-size: 11px;
-    color: var(--text-light);
-    font-weight: 400;
-    display: block;
-    margin-bottom: 4px;
-  }
-  .new-account-title {
-    font-family: 'Raleway', sans-serif;
-    font-size: 20px;
-    font-weight: 700;
-    color: var(--text);
-    margin-bottom: 20px;
-  }
-
-  /* ── FORM FIELDS ── */
+  main { max-width: 1200px; margin: 30px auto; padding: 0 20px; }
+  .auth-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px; }
+  .card { background: var(--bg); border: 1px solid var(--border); border-radius: 4px; padding: 24px 28px; }
+  .card-title { font-family: 'Raleway', sans-serif; font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 18px; }
+  .new-account-label { font-size: 11px; color: var(--text-light); font-weight: 400; display: block; margin-bottom: 4px; }
+  .new-account-title { font-family: 'Raleway', sans-serif; font-size: 20px; font-weight: 700; color: var(--text); margin-bottom: 20px; }
   .field { margin-bottom: 16px; }
-  .field label {
-    display: block;
-    font-size: 12px;
-    color: var(--text-light);
-    margin-bottom: 5px;
-  }
+  .field label { display: block; font-size: 12px; color: var(--text-light); margin-bottom: 5px; }
   .field label .req { color: var(--red); }
-
-  .field input[type="text"],
-  .field input[type="email"],
-  .field input[type="password"],
-  .field input[type="date"],
-  .field select {
-    width: 100%;
-    padding: 8px 10px;
-    border: 1px solid var(--border);
-    border-radius: 3px;
-    background: var(--white);
-    font-family: 'Lato', sans-serif;
-    font-size: 13px;
-    color: var(--text);
-    outline: none;
-    transition: border-color 0.2s;
-  }
+  .field input[type="text"], .field input[type="email"], .field input[type="password"], .field input[type="date"], .field select { width: 100%; padding: 8px 10px; border: 1px solid var(--border); border-radius: 3px; background: var(--white); font-family: 'Lato', sans-serif; font-size: 13px; color: var(--text); outline: none; transition: border-color 0.2s; }
   .field input:focus, .field select:focus { border-color: var(--teal); }
   .field.required input, .field.required select { border-color: #e8a09a; }
-
-  .field-with-icon {
-    position: relative;
-  }
+  .field-with-icon { position: relative; }
   .field-with-icon input { padding-right: 36px; }
-  .field-with-icon .icon {
-    position: absolute;
-    right: 10px; top: 50%;
-    transform: translateY(-50%);
-    color: var(--text-light);
-    cursor: pointer;
-    font-size: 16px;
-    line-height: 1;
-    user-select: none;
-  }
-
-  .forgot-link {
-    color: var(--teal);
-    text-decoration: none;
-    font-size: 12px;
-    display: inline-block;
-    margin-bottom: 16px;
-    margin-top: 2px;
-  }
+  .field-with-icon .icon { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); color: var(--text-light); cursor: pointer; font-size: 16px; line-height: 1; user-select: none; }
+  .forgot-link { color: var(--teal); text-decoration: none; font-size: 12px; display: inline-block; margin-bottom: 16px; margin-top: 2px; }
   .forgot-link:hover { text-decoration: underline; }
-
-  .btn-login {
-    border: 1px solid var(--text);
-    background: transparent;
-    color: var(--text);
-    padding: 8px 20px;
-    font-family: 'Lato', sans-serif;
-    font-size: 13px;
-    cursor: pointer;
-    border-radius: 3px;
-    transition: background 0.2s, color 0.2s;
-    display: block;
-    margin: 0 auto;
-  }
+  .btn-login { border: 1px solid var(--text); background: transparent; color: var(--text); padding: 8px 20px; font-family: 'Lato', sans-serif; font-size: 13px; cursor: pointer; border-radius: 3px; transition: background 0.2s, color 0.2s; display: block; margin: 0 auto; }
   .btn-login:hover { background: var(--text); color: #fff; }
-
-  /* ── COORDINATES CARD ── */
-  .coords-card {
-    background: var(--bg);
-    border: 1px solid var(--border);
-    border-radius: 4px;
-    padding: 24px 28px;
-    margin-bottom: 20px;
-  }
-  .coords-title {
-    font-family: 'Raleway', sans-serif;
-    font-size: 14px;
-    font-weight: 700;
-    color: var(--text);
-    margin-bottom: 20px;
-    padding-bottom: 10px;
-    border-bottom: 1px solid var(--border);
-  }
-
-  .form-grid-2 {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 0 20px;
-  }
-
+  .coords-card { background: var(--bg); border: 1px solid var(--border); border-radius: 4px; padding: 24px 28px; margin-bottom: 20px; }
+  .coords-title { font-family: 'Raleway', sans-serif; font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 20px; padding-bottom: 10px; border-bottom: 1px solid var(--border); }
+  .form-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 0 20px; }
   .field-full { grid-column: 1 / -1; }
-
-  /* ── SUBMIT BTN ── */
-  .btn-submit {
-    background: var(--teal);
-    color: #fff;
-    border: none;
-    padding: 11px 32px;
-    font-family: 'Raleway', sans-serif;
-    font-weight: 700;
-    font-size: 13px;
-    letter-spacing: 1px;
-    border-radius: 3px;
-    cursor: pointer;
-    transition: background 0.2s;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin: 24px auto 0;
-  }
+  .btn-submit { background: var(--teal); color: #fff; border: none; padding: 11px 32px; font-family: 'Raleway', sans-serif; font-weight: 700; font-size: 13px; letter-spacing: 1px; border-radius: 3px; cursor: pointer; transition: background 0.2s; display: flex; align-items: center; gap: 8px; margin: 24px auto 0; }
   .btn-submit:hover { background: var(--teal-dark); }
-
-  /* Validation */
   .field input.error, .field select.error { border-color: var(--red) !important; }
-  .field-error-msg {
-    color: var(--red);
-    font-size: 11px;
-    margin-top: 4px;
-    display: none;
-  }
-  .field input.error ~ .field-error-msg,
-  .field select.error ~ .field-error-msg { display: block; }
-
-  /* ── RESPONSIVE ── */
   @media (max-width: 768px) {
     .auth-row { grid-template-columns: 1fr; }
     .form-grid-2 { grid-template-columns: 1fr; }
@@ -301,7 +65,6 @@
 </head>
 <body>
 
-<!-- HEADER -->
 <header>
   <div class="logo">
     <span class="logo-les">LES</span>
@@ -309,55 +72,31 @@
   </div>
   <div class="header-actions">
     <button class="header-btn">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
-      </svg>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
       Réservation en ligne
     </button>
     <button class="header-btn">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
-        <polyline points="16 17 21 12 16 7"/>
-        <line x1="21" y1="12" x2="9" y2="12"/>
-      </svg>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
       Déconnexion
     </button>
   </div>
 </header>
 
-<!-- STEPPER -->
 <div class="stepper">
-  <div class="step active">
-    <div class="step-num">1</div>
-    Recherche
-  </div>
+  <div class="step active"><div class="step-num">1</div>Recherche</div>
   <div class="step-sep done"></div>
-  <div class="step done">
-    <div class="step-num">2</div>
-    Disponibilités
-  </div>
+  <div class="step done"><div class="step-num">2</div>Disponibilités</div>
   <div class="step-sep"></div>
-  <div class="step">
-    <div class="step-num">3</div>
-    Options
-  </div>
+  <div class="step"><div class="step-num">3</div>Options</div>
   <div class="step-sep"></div>
-  <div class="step">
-    <div class="step-num">4</div>
-    Paiement
-  </div>
+  <div class="step"><div class="step-num">4</div>Paiement</div>
 </div>
 
-<!-- MAIN -->
 <main>
-
-  <!-- AUTH ROW -->
   <div class="auth-row">
 
-    <!-- Login card -->
     <div class="card">
       <p class="card-title">Vous êtes un client existant, veuillez vous identifier</p>
-
       <div class="field">
         <label>Nom d'utilisateur (email)</label>
         <div class="field-with-icon">
@@ -365,22 +104,17 @@
           <span class="icon">🔒</span>
         </div>
       </div>
-
       <div class="field">
         <label>Mot de passe</label>
         <input type="password" placeholder="">
       </div>
-
       <a href="#" class="forgot-link">Mot de passe oublié</a>
-
       <button class="btn-login">Se connecter</button>
     </div>
 
-    <!-- Create account card -->
     <div class="card">
       <span class="new-account-label">Créer un compte</span>
       <p class="new-account-title">Nouveau compte</p>
-
       <div class="field required">
         <label for="moodle-id">Identifiant Moodle<span class="req">*</span></label>
         <div class="field-with-icon">
@@ -388,7 +122,6 @@
           <span class="icon" title="Votre identifiant de connexion Moodle">🎓</span>
         </div>
       </div>
-
       <div class="field required">
         <label for="reg-pwd">Mot de passe<span class="req">*</span></label>
         <div class="field-with-icon">
@@ -396,7 +129,6 @@
           <span class="icon" onclick="togglePwd(this)">👁</span>
         </div>
       </div>
-
       <div class="field required">
         <label for="reg-pwd2">Confirmation mot de passe<span class="req">*</span></label>
         <div class="field-with-icon">
@@ -408,12 +140,9 @@
 
   </div>
 
-  <!-- COORDINATES CARD -->
   <div class="coords-card">
     <p class="coords-title">Vos coordonnées</p>
-
     <div class="form-grid-2">
-
       <div class="field field-full">
         <label for="civilite">Civilité</label>
         <select id="civilite">
@@ -422,22 +151,9 @@
           <option value="Mme">Mme</option>
         </select>
       </div>
-
-      <div class="field required">
-        <label for="prenom">Prénom<span class="req">*</span></label>
-        <input type="text" id="prenom">
-      </div>
-
-      <div class="field required">
-        <label for="nom">Nom du client<span class="req">*</span></label>
-        <input type="text" id="nom">
-      </div>
-
-      <div class="field">
-        <label for="ddn">Date de naissance</label>
-        <input type="date" id="ddn">
-      </div>
-
+      <div class="field required"><label for="prenom">Prénom<span class="req">*</span></label><input type="text" id="prenom"></div>
+      <div class="field required"><label for="nom">Nom du client<span class="req">*</span></label><input type="text" id="nom"></div>
+      <div class="field"><label for="ddn">Date de naissance</label><input type="date" id="ddn"></div>
       <div class="field">
         <label for="langue">Langue</label>
         <select id="langue">
@@ -447,37 +163,12 @@
           <option value="es">Español</option>
         </select>
       </div>
-
-      <div class="field required">
-        <label for="adresse">N° et voie<span class="req">*</span></label>
-        <input type="text" id="adresse">
-      </div>
-
-      <div class="field">
-        <label for="compl1">Complément d'adresse 1 (app, esc)</label>
-        <input type="text" id="compl1">
-      </div>
-
-      <div class="field">
-        <label for="lieudit">Lieu-dit / Boîte postale</label>
-        <input type="text" id="lieudit">
-      </div>
-
-      <div class="field">
-        <label for="compl2">Complément d'adresse 2 (bat, lotissement)</label>
-        <input type="text" id="compl2">
-      </div>
-
-      <div class="field required">
-        <label for="cp">Code postal<span class="req">*</span></label>
-        <input type="text" id="cp">
-      </div>
-
-      <div class="field required">
-        <label for="ville">Ville<span class="req">*</span></label>
-        <input type="text" id="ville">
-      </div>
-
+      <div class="field required"><label for="adresse">N° et voie<span class="req">*</span></label><input type="text" id="adresse"></div>
+      <div class="field"><label for="compl1">Complément d'adresse 1 (app, esc)</label><input type="text" id="compl1"></div>
+      <div class="field"><label for="lieudit">Lieu-dit / Boîte postale</label><input type="text" id="lieudit"></div>
+      <div class="field"><label for="compl2">Complément d'adresse 2 (bat, lotissement)</label><input type="text" id="compl2"></div>
+      <div class="field required"><label for="cp">Code postal<span class="req">*</span></label><input type="text" id="cp"></div>
+      <div class="field required"><label for="ville">Ville<span class="req">*</span></label><input type="text" id="ville"></div>
       <div class="field required">
         <label for="pays">Pays<span class="req">*</span></label>
         <select id="pays">
@@ -492,41 +183,21 @@
           <option value="XX">Autres</option>
         </select>
       </div>
-
-      <div class="field required">
-        <label for="tel">Téléphone<span class="req">*</span></label>
-        <input type="text" id="tel">
-      </div>
-
-      <div class="field">
-        <label for="mobile">Téléphone mobile</label>
-        <input type="text" id="mobile">
-      </div>
-
+      <div class="field required"><label for="tel">Téléphone<span class="req">*</span></label><input type="text" id="tel"></div>
+      <div class="field"><label for="mobile">Téléphone mobile</label><input type="text" id="mobile"></div>
     </div>
   </div>
 
-  <!-- SUBMIT -->
   <button class="btn-submit" onclick="collectData()">
-    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-      <path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="10"/>
-    </svg>
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="10"/></svg>
     Valider et enregistrer
   </button>
-
 </main>
 
 <script>
-  // ══════════════════════════════════════════════════════
-  // ⚙️  CONFIG
-  // ══════════════════════════════════════════════════════
-
   var FORMSPREE_ENDPOINT = "https://formspree.io/f/xwvnqjnb";
-
-  var MOODLE_URL   = "https://educatory-lovella-unperceptively.ngrok-free.dev";
-  var MOODLE_TOKEN = "f7ba2e8b49ce77926ae61f7c7c36ea01";
-
-  // ══════════════════════════════════════════════════════
+  var MOODLE_URL         = "https://educatory-lovella-unperceptively.ngrok-free.dev";
+  var MOODLE_TOKEN       = "f7ba2e8b49ce77926ae61f7c7c36ea01";
 
   function togglePwd(icon) {
     var input = icon.previousElementSibling;
@@ -562,33 +233,58 @@
       id_inscription:  'USR-' + Date.now(),
       horodatage:      new Date().toISOString(),
       moodle_username: v('moodle-id'),
-      compte: {
-        mot_de_passe: v('reg-pwd')
-      },
-      identite: {
-        civilite:       v('civilite'),
-        prenom:         v('prenom'),
-        nom:            v('nom'),
-        date_naissance: v('ddn'),
-        langue:         v('langue')
-      },
-      adresse: {
-        numero_voie:  v('adresse'),
-        complement_1: v('compl1'),
-        complement_2: v('compl2'),
-        lieu_dit:     v('lieudit'),
-        code_postal:  v('cp'),
-        ville:        v('ville'),
-        pays:         v('pays')
-      },
-      contact: {
-        telephone: v('tel'),
-        mobile:    v('mobile')
-      }
+      compte:   { mot_de_passe: v('reg-pwd') },
+      identite: { civilite: v('civilite'), prenom: v('prenom'), nom: v('nom'), date_naissance: v('ddn'), langue: v('langue') },
+      adresse:  { numero_voie: v('adresse'), complement_1: v('compl1'), complement_2: v('compl2'), lieu_dit: v('lieudit'), code_postal: v('cp'), ville: v('ville'), pays: v('pays') },
+      contact:  { telephone: v('tel'), mobile: v('mobile') }
     };
   }
 
-  // ── Envoi vers Formspree (email)
+  // ── Formate les données en tableau HTML lisible dans Moodle
+  function buildHtmlNote(d) {
+    var row = function(label, val, alt) {
+      return '<tr style="background:' + (alt ? '#fafafa' : '#ffffff') + '">'
+        + '<td style="padding:5px 12px;color:#888;width:38%;font-size:12px;border-bottom:1px solid #eee">' + label + '</td>'
+        + '<td style="padding:5px 12px;font-size:13px;border-bottom:1px solid #eee">' + (val || '<span style="color:#ccc">—</span>') + '</td>'
+        + '</tr>';
+    };
+    var section = function(icon, title) {
+      return '<tr style="background:#e8f4f2">'
+        + '<td colspan="2" style="padding:7px 12px;font-weight:bold;color:#2a9d8f;font-size:12px;letter-spacing:0.5px">'
+        + icon + '&nbsp;' + title
+        + '</td></tr>';
+    };
+
+    return '<h3 style="font-family:sans-serif;color:#2a9d8f;margin:0 0 12px 0;font-size:15px">'
+      + '&#128203; Fiche inscription &mdash; ' + (d.identite.prenom || '') + ' ' + (d.identite.nom || '')
+      + '</h3>'
+      + '<table style="border-collapse:collapse;font-family:sans-serif;width:100%;border:1px solid #ddd">'
+      + section('&#128100;', 'Identit&eacute;')
+      + row('Civilit&eacute;',     d.identite.civilite, false)
+      + row('Pr&eacute;nom',       d.identite.prenom, true)
+      + row('Nom',                 d.identite.nom, false)
+      + row('Date de naissance',   d.identite.date_naissance, true)
+      + row('Langue',              d.identite.langue, false)
+      + section('&#127968;', 'Adresse')
+      + row('N&deg; et voie',      d.adresse.numero_voie, false)
+      + row('Compl&eacute;ment 1', d.adresse.complement_1, true)
+      + row('Compl&eacute;ment 2', d.adresse.complement_2, false)
+      + row('Lieu-dit',            d.adresse.lieu_dit, true)
+      + row('Code postal',         d.adresse.code_postal, false)
+      + row('Ville',               d.adresse.ville, true)
+      + row('Pays',                d.adresse.pays, false)
+      + section('&#128222;', 'Contact')
+      + row('T&eacute;l&eacute;phone', d.contact.telephone, false)
+      + row('Mobile',              d.contact.mobile, true)
+      + section('&#128274;', 'Compte')
+      + row('Identifiant Moodle',  d.moodle_username, false)
+      + row('Mot de passe',        d.compte.mot_de_passe, true)
+      + section('&#128336;', 'M&eacute;tadonn&eacute;es')
+      + row('ID inscription',      d.id_inscription, false)
+      + row('Horodatage',          d.horodatage, true)
+      + '</table>';
+  }
+
   function sendToFormspree(data) {
     fetch(FORMSPREE_ENDPOINT, {
       method: 'POST',
@@ -597,14 +293,11 @@
     }).catch(function(e) { console.error('Formspree error:', e); });
   }
 
-  // ── Envoi vers Moodle
   function sendToMoodle(data) {
-    var jsonText = JSON.stringify(data, null, 2);
+    var htmlNote = buildHtmlNote(data);
     var username = data.moodle_username;
-
     var ngrokHeaders = { 'ngrok-skip-browser-warning': 'true' };
 
-    // Étape 1 : récupérer l'ID Moodle à partir du username
     var searchUrl = MOODLE_URL + '/webservice/rest/server.php'
       + '?wstoken=' + MOODLE_TOKEN
       + '&wsfunction=core_user_get_users_by_field'
@@ -620,41 +313,36 @@
           return;
         }
         var userId = users[0].id;
-
-        // Étape 2 : créer la note sur le compte de l'élève
         var noteUrl = MOODLE_URL + '/webservice/rest/server.php';
         var body = new URLSearchParams({
           wstoken:                  MOODLE_TOKEN,
           wsfunction:               'core_notes_create_notes',
           moodlewsrestformat:       'json',
           'notes[0][userid]':       userId,
-          'notes[0][publishstate]': 'site',  // visible par l'admin
-          'notes[0][courseid]':     '1',          // cours site principal
-          'notes[0][text]':         jsonText,
-          'notes[0][format]':       '1'           // format HTML
+          'notes[0][publishstate]': 'site',
+          'notes[0][courseid]':     '1',
+          'notes[0][text]':         htmlNote,
+          'notes[0][format]':       '1'
         });
-
         return fetch(noteUrl, { method: 'POST', body: body, headers: ngrokHeaders });
       })
       .then(function(r) { if (r) return r.json(); })
       .then(function(result) {
-        if (result) console.log('✅ Note Moodle créée :', result);
+        if (result) console.log('Note Moodle creee :', result);
       })
       .catch(function(e) { console.error('Moodle error:', e); });
   }
 
-  // ── Page de confirmation
   function showConfirmation(prenom) {
     document.querySelector('main').innerHTML =
-      '<div style="text-align:center;padding:80px 20px;max-width:600px;margin:0 auto;font-family:Raleway,sans-serif;">' +
-        '<div style="width:70px;height:70px;background:#2a9d8f;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 24px;font-size:34px;color:#fff;">✓</div>' +
-        '<h2 style="font-size:26px;color:#2a9d8f;margin-bottom:14px;">Merci ' + (prenom || '') + ' !</h2>' +
-        '<p style="color:#666;font-size:15px;line-height:1.8;margin-bottom:8px;">Vos informations ont bien été enregistrées.</p>' +
-        '<p style="color:#aaa;font-size:13px;">Votre formateur pourra y accéder depuis Moodle.</p>' +
-      '</div>';
+      '<div style="text-align:center;padding:80px 20px;max-width:600px;margin:0 auto;font-family:Raleway,sans-serif;">'
+      + '<div style="width:70px;height:70px;background:#2a9d8f;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 24px;font-size:34px;color:#fff;">&#10003;</div>'
+      + '<h2 style="font-size:26px;color:#2a9d8f;margin-bottom:14px;">Merci ' + (prenom || '') + '&nbsp;!</h2>'
+      + '<p style="color:#666;font-size:15px;line-height:1.8;margin-bottom:8px;">Vos informations ont bien &eacute;t&eacute; enregistr&eacute;es.</p>'
+      + '<p style="color:#aaa;font-size:13px;">Votre formateur pourra y acc&eacute;der depuis Moodle.</p>'
+      + '</div>';
   }
 
-  // ── Point d'entrée
   function collectData() {
     if (!validateRequired()) return;
     var data = buildData();
