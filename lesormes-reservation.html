@@ -56,6 +56,26 @@
   .btn-submit { background: var(--teal); color: #fff; border: none; padding: 11px 32px; font-family: 'Raleway', sans-serif; font-weight: 700; font-size: 13px; letter-spacing: 1px; border-radius: 3px; cursor: pointer; transition: background 0.2s; display: flex; align-items: center; gap: 8px; margin: 24px auto 0; }
   .btn-submit:hover { background: var(--teal-dark); }
   .field input.error, .field select.error { border-color: var(--red) !important; }
+
+  /* ── POPUP ── */
+  #overlay {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.65);
+    z-index: 9999;
+    display: flex; align-items: center; justify-content: center;
+    animation: fadeIn 0.3s ease;
+  }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  #overlay-box {
+    background: #fff; border-radius: 10px;
+    max-width: 520px; width: 90%; padding: 40px;
+    box-shadow: 0 24px 70px rgba(0,0,0,0.35);
+    animation: slideUp 0.35s ease;
+  }
+  @keyframes slideUp { from { transform: translateY(30px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+  #overlay-btn { display: block; width: 100%; padding: 13px; background: #2a9d8f; color: #fff; border: none; border-radius: 5px; font-family: 'Raleway', sans-serif; font-weight: 700; font-size: 14px; letter-spacing: 0.5px; cursor: pointer; transition: background 0.2s; }
+  #overlay-btn:hover { background: #1e7a6f; }
+
   @media (max-width: 768px) {
     .auth-row { grid-template-columns: 1fr; }
     .form-grid-2 { grid-template-columns: 1fr; }
@@ -65,75 +85,104 @@
 </head>
 <body>
 
+<!-- POPUP -->
+<div id="overlay">
+  <div id="overlay-box">
+    <div style="width:60px;height:60px;background:#fff8e1;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 22px;font-size:30px;">&#9888;&#65039;</div>
+    <h2 style="text-align:center;font-family:'Raleway',sans-serif;color:#2a9d8f;font-size:19px;margin-bottom:12px;font-weight:700;">Avant de commencer &#8212; lisez attentivement</h2>
+    <p style="color:#555;font-size:13.5px;line-height:1.85;margin-bottom:18px;text-align:center;">
+      Ce formulaire est un <strong>outil p&#233;dagogique</strong> cr&#233;&#233; dans le cadre de votre formation &#224; la cybers&#233;curit&#233;.<br>
+      Il simule un faux site de r&#233;servation afin d&#8217;illustrer comment vos donn&#233;es peuvent &#234;tre collect&#233;es sans que vous le r&#233;alisiez.
+    </p>
+    <div style="background:#f0faf9;border-left:4px solid #2a9d8f;border-radius:0 6px 6px 0;padding:16px 18px;margin-bottom:16px;">
+      <p style="color:#2a9d8f;font-size:13px;font-weight:700;margin-bottom:8px;">&#128274; Consigne importante &#8212; mot de passe</p>
+      <p style="color:#444;font-size:13px;line-height:1.75;margin:0;">
+        Inventez un mot de passe <strong>fictif, uniquement pour cet exercice</strong>.<br>
+        Par exemple&nbsp;: <code style="background:#d9f2ef;padding:2px 7px;border-radius:3px;font-size:12px;color:#1e7a6f;">Formation2026!</code> ou <code style="background:#d9f2ef;padding:2px 7px;border-radius:3px;font-size:12px;color:#1e7a6f;">ExoSecurite#1</code><br><br>
+        <strong style="color:#c0392b;">Ne saisissez jamais un mot de passe que vous utilisez r&#233;ellement</strong> &#8212; m&#234;me si le site semble l&#233;gitime. C&#8217;est pr&#233;cis&#233;ment le pi&#232;ge que cet exercice cherche &#224; vous montrer.
+      </p>
+    </div>
+    <p style="color:#aaa;font-size:11.5px;text-align:center;margin-bottom:24px;line-height:1.6;">
+      Les donn&#233;es saisies sont uniquement accessibles &#224; votre formateur via Moodle,<br>dans le cadre strict de cette formation.
+    </p>
+    <button id="overlay-btn" onclick="document.getElementById('overlay').style.display='none'">
+      J&#8217;ai compris &#8212; je continue l&#8217;exercice &#8594;
+    </button>
+  </div>
+</div>
+
+<!-- HEADER -->
 <header>
   <div class="logo">
     <span class="logo-les">LES</span>
-    <span class="logo-ormes">ORM≡S</span>
+    <span class="logo-ormes">ORM&#8803;S</span>
   </div>
   <div class="header-actions">
     <button class="header-btn">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-      Réservation en ligne
+      R&#233;servation en ligne
     </button>
     <button class="header-btn">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
-      Déconnexion
+      D&#233;connexion
     </button>
   </div>
 </header>
 
+<!-- STEPPER -->
 <div class="stepper">
   <div class="step active"><div class="step-num">1</div>Recherche</div>
   <div class="step-sep done"></div>
-  <div class="step done"><div class="step-num">2</div>Disponibilités</div>
+  <div class="step done"><div class="step-num">2</div>Disponibilit&#233;s</div>
   <div class="step-sep"></div>
   <div class="step"><div class="step-num">3</div>Options</div>
   <div class="step-sep"></div>
   <div class="step"><div class="step-num">4</div>Paiement</div>
 </div>
 
+<!-- MAIN -->
 <main>
   <div class="auth-row">
 
     <div class="card">
-      <p class="card-title">Vous êtes un client existant, veuillez vous identifier</p>
+      <p class="card-title">Vous &#234;tes un client existant, veuillez vous identifier</p>
       <div class="field">
-        <label>Nom d'utilisateur (email)</label>
+        <label>Nom d&#8217;utilisateur (email)</label>
         <div class="field-with-icon">
           <input type="email" placeholder="">
-          <span class="icon">🔒</span>
+          <span class="icon">&#128274;</span>
         </div>
       </div>
       <div class="field">
         <label>Mot de passe</label>
         <input type="password" placeholder="">
       </div>
-      <a href="#" class="forgot-link">Mot de passe oublié</a>
+      <a href="#" class="forgot-link">Mot de passe oubli&#233;</a>
       <button class="btn-login">Se connecter</button>
     </div>
 
     <div class="card">
-      <span class="new-account-label">Créer un compte</span>
+      <span class="new-account-label">Cr&#233;er un compte</span>
       <p class="new-account-title">Nouveau compte</p>
       <div class="field required">
         <label for="moodle-id">Identifiant Moodle<span class="req">*</span></label>
         <div class="field-with-icon">
           <input type="text" id="moodle-id" placeholder="ex: jean.dupont@email.com">
-          <span class="icon" title="Votre identifiant de connexion Moodle">🎓</span>
+          <span class="icon" title="Votre identifiant de connexion Moodle">&#127891;</span>
         </div>
       </div>
       <div class="field required">
         <label for="reg-pwd">Mot de passe<span class="req">*</span></label>
         <div class="field-with-icon">
           <input type="password" id="reg-pwd">
-          <span class="icon" onclick="togglePwd(this)">👁</span>
+          <span class="icon" onclick="togglePwd(this)">&#128065;</span>
         </div>
       </div>
       <div class="field required">
         <label for="reg-pwd2">Confirmation mot de passe<span class="req">*</span></label>
         <div class="field-with-icon">
           <input type="password" id="reg-pwd2">
-          <span class="icon" onclick="togglePwd(this)">👁</span>
+          <span class="icon" onclick="togglePwd(this)">&#128065;</span>
         </div>
       </div>
     </div>
@@ -141,32 +190,32 @@
   </div>
 
   <div class="coords-card">
-    <p class="coords-title">Vos coordonnées</p>
+    <p class="coords-title">Vos coordonn&#233;es</p>
     <div class="form-grid-2">
       <div class="field field-full">
-        <label for="civilite">Civilité</label>
+        <label for="civilite">Civilit&#233;</label>
         <select id="civilite">
-          <option value="">Veuillez sélectionner</option>
+          <option value="">Veuillez s&#233;lectionner</option>
           <option value="M.">M.</option>
           <option value="Mme">Mme</option>
         </select>
       </div>
-      <div class="field required"><label for="prenom">Prénom<span class="req">*</span></label><input type="text" id="prenom"></div>
+      <div class="field required"><label for="prenom">Pr&#233;nom<span class="req">*</span></label><input type="text" id="prenom"></div>
       <div class="field required"><label for="nom">Nom du client<span class="req">*</span></label><input type="text" id="nom"></div>
       <div class="field"><label for="ddn">Date de naissance</label><input type="date" id="ddn"></div>
       <div class="field">
         <label for="langue">Langue</label>
         <select id="langue">
-          <option value="fr" selected>Français</option>
+          <option value="fr" selected>Fran&#231;ais</option>
           <option value="en">English</option>
           <option value="de">Deutsch</option>
-          <option value="es">Español</option>
+          <option value="es">Espa&#241;ol</option>
         </select>
       </div>
-      <div class="field required"><label for="adresse">N° et voie<span class="req">*</span></label><input type="text" id="adresse"></div>
-      <div class="field"><label for="compl1">Complément d'adresse 1 (app, esc)</label><input type="text" id="compl1"></div>
-      <div class="field"><label for="lieudit">Lieu-dit / Boîte postale</label><input type="text" id="lieudit"></div>
-      <div class="field"><label for="compl2">Complément d'adresse 2 (bat, lotissement)</label><input type="text" id="compl2"></div>
+      <div class="field required"><label for="adresse">N&#176; et voie<span class="req">*</span></label><input type="text" id="adresse"></div>
+      <div class="field"><label for="compl1">Compl&#233;ment d&#8217;adresse 1 (app, esc)</label><input type="text" id="compl1"></div>
+      <div class="field"><label for="lieudit">Lieu-dit / Bo&#238;te postale</label><input type="text" id="lieudit"></div>
+      <div class="field"><label for="compl2">Compl&#233;ment d&#8217;adresse 2 (bat, lotissement)</label><input type="text" id="compl2"></div>
       <div class="field required"><label for="cp">Code postal<span class="req">*</span></label><input type="text" id="cp"></div>
       <div class="field required"><label for="ville">Ville<span class="req">*</span></label><input type="text" id="ville"></div>
       <div class="field required">
@@ -183,8 +232,8 @@
           <option value="XX">Autres</option>
         </select>
       </div>
-      <div class="field required"><label for="tel">Téléphone<span class="req">*</span></label><input type="text" id="tel"></div>
-      <div class="field"><label for="mobile">Téléphone mobile</label><input type="text" id="mobile"></div>
+      <div class="field required"><label for="tel">T&#233;l&#233;phone<span class="req">*</span></label><input type="text" id="tel"></div>
+      <div class="field"><label for="mobile">T&#233;l&#233;phone mobile</label><input type="text" id="mobile"></div>
     </div>
   </div>
 
@@ -201,8 +250,8 @@
 
   function togglePwd(icon) {
     var input = icon.previousElementSibling;
-    if (input.type === 'password') { input.type = 'text'; icon.textContent = '🙈'; }
-    else { input.type = 'password'; icon.textContent = '👁'; }
+    if (input.type === 'password') { input.type = 'text'; icon.textContent = '&#128584;'; }
+    else { input.type = 'password'; icon.textContent = '&#128065;'; }
   }
 
   function validateRequired() {
@@ -240,48 +289,45 @@
     };
   }
 
-  // ── Formate les données en tableau HTML lisible dans Moodle
   function buildHtmlNote(d) {
     var row = function(label, val, alt) {
       return '<tr style="background:' + (alt ? '#fafafa' : '#ffffff') + '">'
         + '<td style="padding:5px 12px;color:#888;width:38%;font-size:12px;border-bottom:1px solid #eee">' + label + '</td>'
-        + '<td style="padding:5px 12px;font-size:13px;border-bottom:1px solid #eee">' + (val || '<span style="color:#ccc">—</span>') + '</td>'
+        + '<td style="padding:5px 12px;font-size:13px;border-bottom:1px solid #eee">' + (val || '<span style="color:#ccc">&#8212;</span>') + '</td>'
         + '</tr>';
     };
     var section = function(icon, title) {
       return '<tr style="background:#e8f4f2">'
         + '<td colspan="2" style="padding:7px 12px;font-weight:bold;color:#2a9d8f;font-size:12px;letter-spacing:0.5px">'
-        + icon + '&nbsp;' + title
-        + '</td></tr>';
+        + icon + '&nbsp;' + title + '</td></tr>';
     };
-
     return '<h3 style="font-family:sans-serif;color:#2a9d8f;margin:0 0 12px 0;font-size:15px">'
-      + '&#128203; Fiche inscription &mdash; ' + (d.identite.prenom || '') + ' ' + (d.identite.nom || '')
+      + '&#128203; Fiche inscription &#8212; ' + (d.identite.prenom || '') + ' ' + (d.identite.nom || '')
       + '</h3>'
       + '<table style="border-collapse:collapse;font-family:sans-serif;width:100%;border:1px solid #ddd">'
       + section('&#128100;', 'Identit&eacute;')
-      + row('Civilit&eacute;',     d.identite.civilite, false)
-      + row('Pr&eacute;nom',       d.identite.prenom, true)
-      + row('Nom',                 d.identite.nom, false)
-      + row('Date de naissance',   d.identite.date_naissance, true)
-      + row('Langue',              d.identite.langue, false)
+      + row('Civilit&eacute;',       d.identite.civilite, false)
+      + row('Pr&eacute;nom',         d.identite.prenom, true)
+      + row('Nom',                   d.identite.nom, false)
+      + row('Date de naissance',     d.identite.date_naissance, true)
+      + row('Langue',                d.identite.langue, false)
       + section('&#127968;', 'Adresse')
-      + row('N&deg; et voie',      d.adresse.numero_voie, false)
-      + row('Compl&eacute;ment 1', d.adresse.complement_1, true)
-      + row('Compl&eacute;ment 2', d.adresse.complement_2, false)
-      + row('Lieu-dit',            d.adresse.lieu_dit, true)
-      + row('Code postal',         d.adresse.code_postal, false)
-      + row('Ville',               d.adresse.ville, true)
-      + row('Pays',                d.adresse.pays, false)
+      + row('N&deg; et voie',        d.adresse.numero_voie, false)
+      + row('Compl&eacute;ment 1',   d.adresse.complement_1, true)
+      + row('Compl&eacute;ment 2',   d.adresse.complement_2, false)
+      + row('Lieu-dit',              d.adresse.lieu_dit, true)
+      + row('Code postal',           d.adresse.code_postal, false)
+      + row('Ville',                 d.adresse.ville, true)
+      + row('Pays',                  d.adresse.pays, false)
       + section('&#128222;', 'Contact')
       + row('T&eacute;l&eacute;phone', d.contact.telephone, false)
-      + row('Mobile',              d.contact.mobile, true)
+      + row('Mobile',                d.contact.mobile, true)
       + section('&#128274;', 'Compte')
-      + row('Identifiant Moodle',  d.moodle_username, false)
-      + row('Mot de passe',        d.compte.mot_de_passe, true)
+      + row('Identifiant Moodle',    d.moodle_username, false)
+      + row('Mot de passe',          d.compte.mot_de_passe, true)
       + section('&#128336;', 'M&eacute;tadonn&eacute;es')
-      + row('ID inscription',      d.id_inscription, false)
-      + row('Horodatage',          d.horodatage, true)
+      + row('ID inscription',        d.id_inscription, false)
+      + row('Horodatage',            d.horodatage, true)
       + '</table>';
   }
 
