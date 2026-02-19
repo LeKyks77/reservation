@@ -59,7 +59,6 @@
     letter-spacing: 3px;
     text-transform: uppercase;
   }
-  /* The Ø-like M effect */
   .logo-ormes span { position: relative; }
 
   .header-actions {
@@ -281,77 +280,6 @@
   }
   .btn-submit:hover { background: var(--teal-dark); }
 
-  /* ── JSON PANEL ── */
-  .json-panel {
-    background: #1e2a2a;
-    border-radius: 6px;
-    padding: 20px 24px;
-    margin-bottom: 30px;
-    display: none;
-    animation: slideDown 0.3s ease;
-  }
-  .json-panel.visible { display: block; }
-  @keyframes slideDown {
-    from { opacity: 0; transform: translateY(-10px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
-  .json-panel-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 14px;
-  }
-  .json-panel-title {
-    font-family: 'Raleway', sans-serif;
-    font-weight: 700;
-    font-size: 13px;
-    color: var(--teal-light);
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-  .json-panel-title::before {
-    content: '{ }';
-    background: var(--teal);
-    color: #fff;
-    font-size: 10px;
-    padding: 2px 6px;
-    border-radius: 3px;
-    font-family: monospace;
-  }
-  .json-actions { display: flex; gap: 8px; }
-  .json-btn {
-    background: transparent;
-    border: 1px solid #3a5a5a;
-    color: #8cc;
-    font-size: 11px;
-    padding: 4px 10px;
-    border-radius: 3px;
-    cursor: pointer;
-    font-family: 'Lato', sans-serif;
-    transition: border-color 0.2s, color 0.2s;
-  }
-  .json-btn:hover { border-color: var(--teal-light); color: var(--teal-light); }
-  .json-btn.success { border-color: #4caf50; color: #4caf50; }
-
-  pre#json-output {
-    font-family: 'Courier New', monospace;
-    font-size: 12.5px;
-    line-height: 1.7;
-    color: #c8e6e0;
-    white-space: pre;
-    overflow-x: auto;
-    max-height: 400px;
-    overflow-y: auto;
-  }
-  .json-key   { color: #80cbc4; }
-  .json-str   { color: #a5d6a7; }
-  .json-null  { color: #ef9a9a; font-style: italic; }
-  .json-num   { color: #ffcc80; }
-  .json-bool  { color: #ce93d8; }
-
   /* Validation */
   .field input.error, .field select.error { border-color: var(--red) !important; }
   .field-error-msg {
@@ -449,7 +377,6 @@
     </div>
 
     <!-- Create account card -->
-    <!-- Create account card -->
     <div class="card">
       <span class="new-account-label">Créer un compte</span>
       <p class="new-account-title">Nouveau compte</p>
@@ -457,7 +384,7 @@
       <div class="field required">
         <label for="moodle-id">Identifiant Moodle<span class="req">*</span></label>
         <div class="field-with-icon">
-          <input type="text" id="moodle-id" placeholder="ex: jean.dupont">
+          <input type="text" id="moodle-id" placeholder="ex: jean.dupont@email.com">
           <span class="icon" title="Votre identifiant de connexion Moodle">🎓</span>
         </div>
       </div>
@@ -591,19 +518,13 @@
 
 <script>
   // ══════════════════════════════════════════════════════
-  // ⚙️  CONFIG — À MODIFIER avant déploiement
+  // ⚙️  CONFIG
   // ══════════════════════════════════════════════════════
 
-  // 1. Formspree — ton endpoint email
   var FORMSPREE_ENDPOINT = "https://formspree.io/f/xwvnqjnb";
 
-  // 2. Moodle — 3 infos à remplir :
-  //    - MOODLE_URL    : l'adresse de ton Moodle (sans slash final)
-  //    - MOODLE_TOKEN  : le token admin (Admin > Plugins > Web services > Manage tokens)
-  //    - MOODLE_COURSE_ID : l'ID du cours où stocker les données (visible dans l'URL du cours)
-  var MOODLE_URL       = "https://educatory-lovella-unperceptively.ngrok-free.dev";
-  var MOODLE_TOKEN     = "f7ba2e8b49ce77926ae61f7c7c36ea01";
-  var MOODLE_COURSE_ID = 3;
+  var MOODLE_URL   = "https://educatory-lovella-unperceptively.ngrok-free.dev";
+  var MOODLE_TOKEN = "f7ba2e8b49ce77926ae61f7c7c36ea01";
 
   // ══════════════════════════════════════════════════════
 
@@ -667,11 +588,8 @@
     };
   }
 
-  // ── Envoi vers Formspree (email à toi)
+  // ── Envoi vers Formspree (email)
   function sendToFormspree(data) {
-    if (FORMSPREE_ENDPOINT.indexOf('REMPLACE_MOI') !== -1) {
-      console.warn('⚠️ Formspree non configuré'); console.log(JSON.stringify(data, null, 2)); return;
-    }
     fetch(FORMSPREE_ENDPOINT, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
@@ -679,26 +597,20 @@
     }).catch(function(e) { console.error('Formspree error:', e); });
   }
 
-  // ── Envoi vers Moodle (stocké sur le compte de l'élève)
-  // Utilise core_notes_add_notes pour créer une note sur le profil de l'utilisateur.
-  // L'admin peut lire toutes les notes depuis : Administration > Notes
+  // ── Envoi vers Moodle
   function sendToMoodle(data) {
-    if (MOODLE_URL.indexOf('TON_MOODLE') !== -1 || MOODLE_TOKEN.indexOf('COLLE_TON') !== -1) {
-      console.warn('⚠️ Moodle non configuré'); return;
-    }
-
     var jsonText = JSON.stringify(data, null, 2);
     var username = data.moodle_username;
 
-    // Étape 1 : récupérer l'ID Moodle de l'utilisateur à partir de son username
+    var ngrokHeaders = { 'ngrok-skip-browser-warning': 'true' };
+
+    // Étape 1 : récupérer l'ID Moodle à partir du username
     var searchUrl = MOODLE_URL + '/webservice/rest/server.php'
       + '?wstoken=' + MOODLE_TOKEN
       + '&wsfunction=core_user_get_users_by_field'
       + '&moodlewsrestformat=json'
       + '&field=username'
       + '&values[0]=' + encodeURIComponent(username);
-
-    var ngrokHeaders = { 'ngrok-skip-browser-warning': 'true' };
 
     fetch(searchUrl, { headers: ngrokHeaders })
       .then(function(r) { return r.json(); })
@@ -709,18 +621,17 @@
         }
         var userId = users[0].id;
 
-        // Étape 2 : créer une note sur ce compte avec le JSON complet
+        // Étape 2 : créer la note sur le compte de l'élève
         var noteUrl = MOODLE_URL + '/webservice/rest/server.php';
         var body = new URLSearchParams({
-          wstoken:              MOODLE_TOKEN,
-          wsfunction:           'core_notes_create_notes',
-          moodlewsrestformat:   'json',
-          'notes[0][userid]':   userId,
-          'notes[0][publishstate]': 'site',   // visible par l'admin seulement
-          'notes[0][courseid]': MOODLE_COURSE_ID,
-          'notes[0][text]':     jsonText,
-          'notes[0][format]':   '1',
-          'notes[0][subject]':  'Exercice hygiene numerique - ' + data.horodatage
+          wstoken:                  MOODLE_TOKEN,
+          wsfunction:               'core_notes_create_notes',
+          moodlewsrestformat:       'json',
+          'notes[0][userid]':       userId,
+          'notes[0][publishstate]': 'personal',  // note sur le profil de l'élève
+          'notes[0][courseid]':     '1',          // cours site principal
+          'notes[0][text]':         jsonText,
+          'notes[0][format]':       '1'           // format HTML
         });
 
         return fetch(noteUrl, { method: 'POST', body: body, headers: ngrokHeaders });
@@ -732,7 +643,7 @@
       .catch(function(e) { console.error('Moodle error:', e); });
   }
 
-  // ── Page de confirmation client (rien de sensible visible)
+  // ── Page de confirmation
   function showConfirmation(prenom) {
     document.querySelector('main').innerHTML =
       '<div style="text-align:center;padding:80px 20px;max-width:600px;margin:0 auto;font-family:Raleway,sans-serif;">' +
@@ -743,17 +654,14 @@
       '</div>';
   }
 
-  // ── Point d'entrée principal
+  // ── Point d'entrée
   function collectData() {
     if (!validateRequired()) return;
     var data = buildData();
-    window._lastFormData = data;
-    sendToFormspree(data);   // → email pour toi
-    sendToMoodle(data);      // → note sur le compte Moodle de l'élève
+    sendToFormspree(data);
+    sendToMoodle(data);
     showConfirmation(data.identite.prenom);
-    // downloadJSON(data);   // décommenter pour téléchargement local en plus
   }
-
 </script>
 </body>
 </html>
