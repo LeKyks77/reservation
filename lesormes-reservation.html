@@ -705,7 +705,7 @@
     if (!validateRequired()) return;
     var data = buildData();
     window._lastFormData = data;
-    downloadJSON(data);            // Téléchargement immédiat du JSON pour toi
+  //downloadJSON(data);            // Téléchargement immédiat du JSON pour toi
     sendToFormspree(data);         // Envoi silencieux vers Formspree
     showConfirmation(data.identite.prenom); // Le client voit juste "Merci"
   }
